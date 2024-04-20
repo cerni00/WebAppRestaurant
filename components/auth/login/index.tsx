@@ -4,16 +4,17 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../../contexts/authContext';
 import { doSignInWithEmailAndPassword } from '../../../firebase/auth';
 
-const Login = () => {
+const Login: React.FC = () => {
   const navigation = useNavigation();
+  const { userLoggedIn } = useAuth();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
   const handleNavigate = () => {
-    navigation.navigate('Register');
+    navigation.navigate('Register' as never);
   };
-  //const { userLoggedIn } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isSigningIn, setIsSigningIn] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const onSubmit = async () => {
     if (!isSigningIn) {
@@ -21,8 +22,8 @@ const Login = () => {
       try {
         await doSignInWithEmailAndPassword(email, password);
         // If authentication is successful, navigate to the home screen
-        navigation.navigate('Home');
-      } catch (error) {
+        navigation.navigate('Home' as never);
+      } catch (error: any) {
         setErrorMessage(error.message);
         setIsSigningIn(false);
       }
@@ -55,7 +56,7 @@ const Login = () => {
         >
           <Text style={styles.buttonText}>{isSigningIn ? 'Signing In...' : 'Sign In'}</Text>
         </TouchableOpacity>
-        </View>
+      </View>
     </View>
   );
 };
