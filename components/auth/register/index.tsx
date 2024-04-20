@@ -4,12 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../../contexts/authContext';
 import { doCreateUserWithEmailAndPassword } from '../../../firebase/auth';
 
-const Register = () => {
+const Register: React.FC = () => {
   const navigation = useNavigation();
   const handleNavigate = () => {
-    navigation.navigate('Register');
+    navigation.navigate('Register' as never);
   };
-  //const { userLoggedIn } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,9 +24,8 @@ const Register = () => {
           throw new Error('Passwords do not match');
         }
         await doCreateUserWithEmailAndPassword(email, password);
-        // If registration is successful, navigate to the login screen
-        navigation.navigate('Login');
-      } catch (error) {
+        navigation.navigate('Login' as never);
+      } catch (error: any) {
         setErrorMessage(error.message);
         setIsRegistering(false);
       }
@@ -68,7 +67,7 @@ const Register = () => {
         </TouchableOpacity>
         <View style={styles.loginLink}>
           <Text style={styles.loginText}>Already have an account? {'   '}</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Login' as never)}>
             <Text style={[styles.loginText, styles.link]}>Login</Text>
           </TouchableOpacity>
         </View>
