@@ -6,6 +6,8 @@ const rootReducer = combineReducers({
   // Add other reducers as needed
 });
 
+export type RootState = ReturnType<typeof rootReducer>;
+
 const store = configureStore({
   reducer: rootReducer,
   // Optional: Add middleware, dev tools configuration, etc.
