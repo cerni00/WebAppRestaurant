@@ -41,7 +41,7 @@ In order to be sure that it works, you have to install all the dependencies.
 "npm install -g react-native-cli" ; 
 "npm install firebase --force" ; 
 
-Also, for the credentials used for Firebase, you need a Firebase account and also to add the application to the Firebase Authentication. Then in the firebase.js file, please put your api key etc
+Also, for the credentials used for Firebase, you need a Firebase account and also to add the application to the Firebase Authentication. Then in the firebase.js file, please put your api key, authDomain, projectId, storageBucket, messagingSenderId, appId and measurementId provided by Firebase. If you want to test the app without using another Firebase account, you have my account information below and I can send you back a screenshot which provides that the data (credentials for a new account) is registered in the Authentication.
 
   apiKey: "AIzaSyBWgGBUPf6tr5F1xyf6o-rT8lWLezfVB54",
   authDomain: "mobileapp-56fc1.firebaseapp.com",
@@ -75,6 +75,9 @@ In order to be able to use Redux for state management, you will have to install 
 Now that the dependencies are installed and the API server is running, let's run the application. Go back to the VSCode terminal and make sure that you are in the RestaurantApp folder. After that, please run the following command:
 
 "npx expo start" ; 
+
+
+I hope that all the instructions are clear and the app can be built. Please do not hesitate to contact me if there is something which is not working, because on my end it works. Thank you!
 
 Enjoy ;)
 
