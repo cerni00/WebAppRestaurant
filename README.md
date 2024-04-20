@@ -64,7 +64,7 @@ If you check, you will see the "node_modules" folder, which is mandatory. Now pl
 
 "node server.js" ; 
 
-You will see "Server is running on http://localhost:3000/api/random-restaurants". If you open the link, you will observe that the API is working. By refreshing the page, new data will be displayed.
+You will see "Server is running on http://localhost:3000/api/random-restaurants". If you open the link, you will observe that the API is working. By refreshing the page, new data will be displayed. You can test the API with Postman also.
 
 In order to be able to use Redux for state management, you will have to install it by running the following commands in the VSCode terminal (make sure you are located in the root folder of the RestaurantApp):
 
