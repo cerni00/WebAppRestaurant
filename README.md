@@ -22,6 +22,40 @@ Now you will see a few files created which are mandatory for running an app, but
 
 Please delete the the following files: "assets" folder, "App.js", "app.json", "babel.config.js", "package-lock.json", "package.json" 
 
+Now download the files from this repository in ZIP format. After that, go to the downloaded folder, extract all files and open the extracted folder - "WebAppRestaurant-main". After that, you will see another folder with the same name - "WebAppRestaurant-main". Open it and now all needed files should be displayed. Please copy them all in the RestaurantApp folder. 
+
+Now you have all the files which build the app, but this is not all you need. 
+In order to be sure that it works, you have to install all the dependencies.
+
+In order to be able to use TypeScript:
+npm install -D @tsconfig/react-native @types/jest @types/react @types/react-test-renderer typescript
+
+Now, please run the following commands:
+
+npm install @react-navigation/native --force
+npm install @react-navigation/stack --force
+npm install @testing-library/react-native --force
+npm install @react-native-async-storage/async-storage --force
+npm install -g react-native-cli
+npm install firebase --force
+
+Also, for the credentials used for Firebase, you need a Firebase account and also to add the application to the Firebase Authentication. Then in the firebase.js file, please put your api key etc
+
+  apiKey: "AIzaSyBWgGBUPf6tr5F1xyf6o-rT8lWLezfVB54",
+  authDomain: "mobileapp-56fc1.firebaseapp.com",
+  projectId: "mobileapp-56fc1",
+  storageBucket: "mobileapp-56fc1.appspot.com",
+  messagingSenderId: "569452177668",
+  appId: "1:569452177668:web:f5e904e5ea2796c8b0c851",
+  measurementId: "G-6GZR5522G8"
+
+I hope that these are all the things that have to be done before running the app
+After that, please run the following command:
+
+npx expo start
+
+Enjoy ;)
+
 
 
 
