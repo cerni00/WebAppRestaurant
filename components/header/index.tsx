@@ -1,15 +1,29 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
+import  {RootState}  from '../../store';
 import { logoutSuccess } from '../../actions/authActions';
 
-const Header = ({ user, logout }) => {
+// Define the types for props received from Redux
+const mapState = (state: RootState) => ({
+  user: state.auth.user,
+});
+
+const mapDispatch = {
+  logout: logoutSuccess,
+};
+
+const connector = connect(mapState, mapDispatch);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+// Define the component
+const Header: React.FC<PropsFromRedux> = ({ user, logout }) => {
   const navigation = useNavigation();
 
   const handleLogout = async () => {
     await logout();
-    navigation.navigate('Login');
+    navigation.navigate('Login' as never);
   };
 
   return (
@@ -20,10 +34,10 @@ const Header = ({ user, logout }) => {
         </TouchableOpacity>
       ) : (
         <View style={styles.linksContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Login' as never)}>
             <Text style={styles.link}>Login</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Register' as never)}>
             <Text style={styles.link}>Register New Account</Text>
           </TouchableOpacity>
         </View>
@@ -32,6 +46,7 @@ const Header = ({ user, logout }) => {
   );
 };
 
+// Styles
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -55,12 +70,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
-  user: state.auth.user,
-});
-
-const mapDispatchToProps = {
-  logout: logoutSuccess,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+// Connect the component to Redux
+export default connector(Header);
