@@ -1,21 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, TextInput } from 'react-native';
+import { View, Text, FlatList, Button, TextInput, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { generateRandomRestaurants } from '../../api/index';
 
-const RestaurantListScreen = () => {
-  const [reviews, setReviews] = useState({}); // State to store reviews
-  const [restaurants] = useState(generateRandomRestaurants());
+interface Review {
+  text: string;
+  rating: number;
+}
+
+interface RestaurantReviews {
+  [key: string]: {
+    text: string;
+    rating: number;
+    reviews?: Review[];
+  };
+}
+
+const RestaurantListScreen: React.FC = () => {
+  const [reviews, setReviews] = useState<RestaurantReviews>({});
+  const [restaurants] = useState<string[]>(generateRandomRestaurants());
 
   useEffect(() => {
-    // Load previous reviews from AsyncStorage when component mounts
     loadPreviousReviews();
   }, []);
 
   const fetchRandomRestaurants = async () => {
     try {
       const response = await fetch('http://localhost:3000/api/random-restaurants', {
-        method: 'GET', headers: {
+        method: 'GET',
+        headers: {
           'Accept': '**',
           'Accept-Encoding': 'gzip, deflate, br, zstd',
           'Accept-Language': 'ro,en;q=0.9,en-GB;q=0.8,en-US;q=0.7',
@@ -30,7 +43,8 @@ const RestaurantListScreen = () => {
           'Sec-Fetch-Mode': 'no-cors',
           'Sec-Fetch-Site': 'same-origin',
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0'
-        }, mode: 'no-cors'
+        },
+        mode: 'no-cors'
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -41,8 +55,11 @@ const RestaurantListScreen = () => {
       console.error('There was a problem with the fetch operation:', error);
       return null;
     }
-  }; 
-  fetchRandomRestaurants();
+  };
+
+  useEffect(() => {
+    fetchRandomRestaurants();
+  }, []);
 
   const loadPreviousReviews = async () => {
     try {
@@ -63,55 +80,52 @@ const RestaurantListScreen = () => {
     }
   };
 
-  const handleReviewTextChange = (restaurant, text) => {
-    setReviews((prevReviews) => ({
+  const handleReviewTextChange = (restaurant: string, text: string) => {
+    setReviews(prevReviews => ({
       ...prevReviews,
-      [restaurant]: { ...prevReviews[restaurant], text: text },
+      [restaurant]: { ...prevReviews[restaurant], text },
     }));
   };
 
-  const handleRatingChange = (restaurant, rating) => {
-    setReviews((prevReviews) => ({
+  const handleRatingChange = (restaurant: string, rating: number) => {
+    setReviews(prevReviews => ({
       ...prevReviews,
-      [restaurant]: { ...prevReviews[restaurant], rating: rating },
+      [restaurant]: { ...prevReviews[restaurant], rating },
     }));
   };
 
-  const handleReviewSubmit = async (restaurant) => {
-    // Add the review to the reviews state
+  const handleReviewSubmit = async (restaurant: string) => {
     const review = reviews[restaurant];
     if (!review || !review.text || !review.rating) {
-      alert('Please provide both a review and a rating.');
+      Alert.alert('Please provide both a review and a rating.');
       return;
     }
 
     const existingReviews = review.reviews || [];
     const newReviews = [...existingReviews, { text: review.text, rating: review.rating }];
-    setReviews((prevReviews) => ({
+    setReviews(prevReviews => ({
       ...prevReviews,
       [restaurant]: { ...prevReviews[restaurant], reviews: newReviews },
     }));
 
-    // Save reviews to AsyncStorage
     saveReviews();
 
-    // Reset review state for the current restaurant
-    setReviews((prevReviews) => ({
+    setReviews(prevReviews => ({
       ...prevReviews,
       [restaurant]: { ...prevReviews[restaurant], text: '', rating: 0 },
     }));
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: string }) => (
     <View>
       <Text>{item}</Text>
       <TextInput
         placeholder="Enter your review"
         value={reviews[item]?.text || ''}
-        onChangeText={(text) => handleReviewTextChange(item, text)}
+        onChangeText={text => handleReviewTextChange(item, text)}
       />
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {[1, 2, 3, 4, 5].map((star) => (
+        {[1, 2, 3, 4, 5].map(star => (
           <Button
             key={star}
             title={star.toString()}
@@ -134,13 +148,11 @@ const RestaurantListScreen = () => {
       <FlatList
         data={restaurants}
         renderItem={renderItem}
-        keyExtractor={(item) => item}
+        keyExtractor={item => item}
       />
     </View>
   );
 };
 
 export default RestaurantListScreen;
-
-
 
