@@ -1,4 +1,4 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from './authActionTypes';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS } from './authActionTypes';
 
 
 interface User {
@@ -28,6 +28,16 @@ export interface LoginFailureAction {
     error: string;
   };
 }
+
+
+export interface LogoutSuccessAction {
+  type: typeof LOGOUT_SUCCESS;
+}
+
+export const logoutSuccess = (): LogoutSuccessAction => ({
+  type: LOGOUT_SUCCESS,
+});
+
 
 export const loginRequest = (email: string, password: string): LoginRequestAction => ({
   type: LOGIN_REQUEST,
